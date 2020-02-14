@@ -103,11 +103,12 @@ int main()
 				break;
 			}
 		} while (choice != 1);
+	
+	return 0;
+}
 
 
-
-
-	/*if (NumberOfLoads == 1) //runs orgininal prgm for powering one load if number of loads entered is equal to one
+/*if (NumberOfLoads == 1) //runs orgininal prgm for powering one load if number of loads entered is equal to one
 	{
 		cout << "Enter name of the deivce you will be powering \n";
 		cin >> Device;
@@ -136,6 +137,3 @@ int main()
 			cin >> LoadNames[i];
 		}
 	}*/
-	
-	return 0;
-}
