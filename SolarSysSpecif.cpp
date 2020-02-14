@@ -12,7 +12,7 @@
 #include <string>
 using namespace std;
 
-double AvgInsonolation, Energy, Current, Voltage;
+double AvgInsonolation, Energy = 0.0, Current, Voltage;
 int RunTime, WattsNeeded, NumberOfLoads, PowerDmnd, totalLoad;
 string Device, Units = "Kwh/day/m^2";
 const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12;
