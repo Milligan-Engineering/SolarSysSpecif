@@ -17,7 +17,7 @@ using namespace std;
 const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12, conv = 1000;
 double AvgInsonolation, Energy = 0.0, Current, PowerDmnd, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts;
 double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
-double PowerDmnd(double totalLoad, const int conv)
+//double PowerDmnd(double totalLoad, const int conv)
 int NumberOfLoads;
 string Device, Units = "Kwh/day/m^2";
 string LoadNames[MAXLOADS];
