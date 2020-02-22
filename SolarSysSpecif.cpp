@@ -14,10 +14,11 @@
 #include <cmath>
 using namespace std;
 
-const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12, conv = 1000;
+const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12;
+const double conv = 1000.0;
 double AvgInsonolation, Energy = 0.0, Current, PowerDmnd, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts;																																																																																																		
 double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
-double loadDmnd(double totalLoad, const int conv)
+double loadDmnd(double totalLoad, const int conv);
 int NumberOfLoads;
 string Device, Units = "Kwh/day/m^2";
 string LoadNames[MAXLOADS];
