@@ -24,7 +24,7 @@ double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
 string Device, Units = "Kwh/day/m^2";
 string LoadNames[MAXLOADS];
 
-double PowerDmnd(double load); //precondition: user inputs total load
+double PowerDmnd(double totalLoad); //precondition: user inputs total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
 
 int main()
@@ -69,7 +69,7 @@ int main()
 				cout << "\nThe total load is " << totalLoad << " watts";
 				cout << "\nPlease enter total load value\n";
 				cin >> load;
-				LoadDmnd = PowerDmnd(load);
+				LoadDmnd = PowerDmnd(totalLoad);
 				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 				break;
 				
@@ -86,9 +86,7 @@ int main()
 
 				totalLoad = totalLoad * defVoltage;
 				cout << "\nThe total load is " << totalLoad << " watts";
-				cout << "\nPlease enter total load value";
-				cin >> load;
-				LoadDmnd = PowerDmnd(load);
+				LoadDmnd = PowerDmnd(totalLoad);
 				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 				break;
 				
@@ -116,7 +114,7 @@ int main()
 }
 
 
-double PowerDmnd(double load) // function definition for load conversion calculation
+double PowerDmnd(double totalLoad) // function definition for load conversion calculation
 {
 	const double conv = 1000.0;
 	double convert;
