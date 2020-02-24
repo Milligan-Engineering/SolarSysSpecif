@@ -14,7 +14,8 @@
 #include <cmath>
 using namespace std;
 
-const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12, conv = 1000;
+const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12;
+const double conv = 1000.0;
 double AvgInsonolation, Energy = 0.0, Current, load, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd;
 int NumberOfLoads;
 
@@ -23,8 +24,8 @@ double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
 string Device, Units = "Kwh/day/m^2";
 string LoadNames[MAXLOADS];
 
-double PowerDmnd(double load, const double conv);
-
+double PowerDmnd(double load); //precondition: user inputs total load
+//postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
 
 int main()
 {
@@ -65,10 +66,10 @@ int main()
 					totalLoad += LoadPower[j];
 				}
 
-				cout << "/nThe total load is " << totalLoad << " watts";
-				cout << "\nPlease enter total load value";
+				cout << "\nThe total load is " << totalLoad << " watts";
+				cout << "\nPlease enter total load value\n";
 				cin >> load;
-				LoadDmnd = PowerDmnd(load, conv);
+				LoadDmnd = PowerDmnd(load);
 				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 				break;
 				
@@ -87,14 +88,14 @@ int main()
 				cout << "\nThe total load is " << totalLoad << " watts";
 				cout << "\nPlease enter total load value";
 				cin >> load;
-				LoadDmnd = PowerDmnd(load, conv);
+				LoadDmnd = PowerDmnd(load);
 				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 				break;
 				
 			}
 		} while (choice < 1);
 	
-		cout << "Enter the Average Insonolation value for desired panel location in " << Units << "\n";
+		cout << "\nEnter the Average Insonolation value for desired panel location in " << Units << "\n";
 		cin >> AvgInsonolation;
 		cout << "The Average Insonolation is " << AvgInsonolation << " " << Units << "\n\n";//echoes insonolation
 		cout << "\nEnter number of hours the device will run per day\n";
@@ -105,6 +106,7 @@ int main()
 		cout << "\nThe required panel wattage to power your loads is " << WattsNeeded << " W\n";
 		cout << "\nWhat wattage solar panels will you be using?\n";
 		cin >> panelWatts;
+
 		numbPanels = WattsNeeded / panelWatts;
 		cout << "\nYou will need " << ceil(numbPanels) << " solar panels to power your loads";
 
@@ -114,8 +116,9 @@ int main()
 }
 
 
-double PowerDmnd(double load, const double conv1 = 1000.0) // function definition for load conversion calculation
+double PowerDmnd(double load) // function definition for load conversion calculation
 {
+	const double conv = 1000.0;
 	double convert;
 	convert = load / conv;
 	return convert;
