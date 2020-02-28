@@ -14,9 +14,9 @@
 #include <cmath>
 using namespace std;
 
-const int MINLOADS = 1, MAXLOADS = 5, defVoltage = 12;
+const int MINLOADS = 1, MAXLOADS = 5;
 const double conv = 1000.0;
-double AvgInsonolation, Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd;
+double AvgInsonolation, Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd, load, defVoltage = 12.0;
 int NumberOfLoads;
 
 double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
@@ -30,6 +30,7 @@ double PowerDmnd(double totalLoad); //precondition: user inputs total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
 
 void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
+void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
 
 int main()
 {
@@ -87,6 +88,7 @@ int main()
 					totalLoad += LoadCurrent[k];
 				}
 
+				listPrint(LoadNames, LoadCurrent, load, defVoltage, NumberOfLoads);
 				totalLoad = totalLoad * defVoltage;
 				cout << "\nThe total load is " << totalLoad << " watts";
 				LoadDmnd = PowerDmnd(totalLoad);
@@ -132,4 +134,14 @@ void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
 		cout << LoadNames[i] << " requires " << LoadPower[i] << " Watts\n";
 	}
 return;
+}
+
+void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
+{
+	for (int i = 0; i < NumberOfLoads; i++)
+	{
+		load = LoadCurrent[i] * defVoltage;
+		cout << LoadNames[i] << " requires " << load << " Watts\n";
+	}
+	return;
 }
