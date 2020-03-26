@@ -74,13 +74,25 @@ int main()
 
 		case 2:
 			cout << "You will be running a system analysis\n";
+// The problem is that the program is looking for a file called "infile.dat"
+// The one you saved is "outfile.dat"
+//			inStream.open("infile.dat");
 
-			inStream.open("infile.dat");
+// change this to the name of the file you created "outfile.dat"
+			inStream.open("outfile.dat");
 			if (inStream.fail())
 			{
 				cout << "Input file opening failed.\n";
 				exit(1);
 			}
+// Now it is going to just reading from the file the word "Insonolation"
+			string aString;
+			inStream >> aString;
+// Then a ":" followed by the insonolation value. This is where you need to be specific about how you read and write values
+			inStream >> AvgInsonolation;
+			cout << "***The Average Insonolation is " << AvgInsonolation << " " << Units << "\n";//echoes insonolation
+
+
 
 			// Retrieve and validate number of loads using a while
 			cout << "How many loads will you be powering?\n";
