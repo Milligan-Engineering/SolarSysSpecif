@@ -87,7 +87,7 @@ int main()
 // Then a ":" followed by the insonolation value. This is where you need to be specific about how you read and write values
 			inStream >> InsolationVals[0];
 			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//echoes insonolation
-
+// will still need to fix this.
 
 
 			// Retrieve and validate number of loads using a while
