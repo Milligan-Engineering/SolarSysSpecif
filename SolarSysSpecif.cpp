@@ -4,8 +4,8 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Added search function
-//Last Changed: 04/07/2020
+// Refined Search function
+//Last Changed: 04/14/2020
 
 
 #include <iostream>
@@ -32,7 +32,9 @@ char aString[] = "Average Insolation", ans, answ, result;
 
 double PowerDmnd(double totalLoad); //precondition: user inputs total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
-int search(double LoadPower[], const int MAXLOADS, double target);
+
+char search(double LoadPower[], const int MAXLOADS, double target);
+char search2(double LoadCurrent[], const int MAXLOADS, double target);
 
 void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
 void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
@@ -64,6 +66,14 @@ int main()
 			cout << "You will be entering Insolation values\n";
 			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time.";
 			cin >> numbIV;
+
+			while ((numbIV < MINLOADS) || (numbIV > MAXVALS))//verifies that the number is within the given range
+			{
+				cout << "Number must be between " << MINLOADS << " and " << MAXVALS << " . Please enter number again.\n";
+				cin >> numbIV;
+			}
+			cout << "You will be entering " << numbIV << " Insolation values.\n";// Echoes number
+
 			for (int m = 0; m < numbIV; m++)
 			{
 				cout << "\nEnter Insolation value " << m + 1 << " : ";
@@ -71,6 +81,7 @@ int main()
 			}
 			for (int k = 0; k < numbIV; k++)
 			{
+
 				outStream << aString << " : " << InsolationVals[k] << endl; //Outputs array to txtFile
 			}
 			listPrint(InsolationVals, numbIV);//echoes insolation
@@ -143,7 +154,7 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << result << endl << "\n";
+							cout << target << " is stored in array position " << LoadNames[result] << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
@@ -172,16 +183,16 @@ int main()
 					cin >> ans;
 					do
 					{
-						cout << "Enter the power value you want to search for\n";
+						cout << "Enter the current value you want to search for\n";
 						cin >> target;
-						result = search(LoadPower, MAXLOADS, target);
+						result = search2(LoadCurrent, MAXLOADS, target);
 						if (result == -1)
 						{
 							cout << target << " is not stored in the array\n";
 						}
 						else
 						{
-							cout << target << " is stored in array position " << result << endl << "\n";
+							cout << target << " is stored in array position " << LoadNames[result] << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
@@ -189,6 +200,7 @@ int main()
 					} while ((answ != 'n') && (answ != 'N'));
 
 					listPrint(LoadNames, LoadCurrent, load, defVoltage, NumberOfLoads);
+			
 					totalLoad = totalLoad * defVoltage;
 					cout << "\nThe total load is " << totalLoad << " watts";
 					LoadDmnd = PowerDmnd(totalLoad);
@@ -209,7 +221,7 @@ int main()
 			cin >> panelWatts;
 
 			numbPanels = WattsNeeded / panelWatts;
-			cout << "\nYou will need " << ceil(numbPanels) << " solar panels to power your loads";
+			cout << "\nYou will need " << ceil(numbPanels) << " solar panels to power your loads\n";
 			break;
 			
 		}
@@ -230,7 +242,7 @@ double PowerDmnd(double totalLoad) // function definition for load conversion ca
 	return convert;
 }
 
-int search(double LoadPower[], const int MAXLOADS, double target)
+char search(double LoadPower[], const int MAXLOADS, double target)
 {
 	int index = 0;
 	bool found = false;
@@ -245,8 +257,24 @@ int search(double LoadPower[], const int MAXLOADS, double target)
 		return - 1;
 }
 
+char search2(double LoadCurrent[], const int MAXLOADS, double target)
+{
+	int index = 0;
+	bool found = false;
+	while ((!found) && (index < MAXLOADS))
+		if (target == LoadCurrent[index])
+			found = true;
+		else
+			index++;
+	if (found)
+		return index;
+	else
+		return -1;
+}
+
 void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
 {
+	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
 	{
 		cout << LoadNames[i] << " requires " << LoadPower[i] << " Watts\n";
@@ -256,6 +284,7 @@ return;
 
 void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
 {
+	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
 	{
 		load = LoadCurrent[i] * defVoltage;
