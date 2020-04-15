@@ -4,7 +4,7 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Refined Search function
+// Added multidimensional array
 //Last Changed: 04/14/2020
 
 
@@ -21,13 +21,15 @@ ofstream outStream;
 
 const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 10;
 const double conv = 1000.0;
-double AvgInsolation, AvgInsonolation = 4.0, Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd, load, hours, defVoltage = 12.0, target;
+double AvgInsolation, AvgInsonolation = 4.0, Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd, load, hours;
+double defVoltage = 12.0, target, Latitude, Longitude;
 int NumberOfLoads, numbIV;
 
-double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS];
+double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS], Location[3][2] = { {0,1}, {2,3}, {4,5} };
 
-string Device, Units = "Kwh/day/m^2";
+string Device, Units = "Kwh/day/m^2", Local;
 string LoadNames[MAXLOADS], InsolationVals[MAXVALS];
+
 char aString[] = "Average Insolation", ans, answ, result;
 
 double PowerDmnd(double totalLoad); //precondition: user inputs total load
@@ -57,14 +59,21 @@ int main()
 	do
 	{
 		cout << "\nWould you like to enter Insolation values or run a system analysis?\nEnter 1 for Insolation\nEnter 2 for Analysis\nPlease note that you must enter at least one Insolation value before running your first analysis\n";
+		cout << "Enter integer numbers only. Any other character (.,/ etc.) will crash the program. Please enter carefully.\n";
 		cin >> choice;
+		do 
+		{
+			cout << "Invalid Input: ";
+			cout << "Please enter either '1' or '2'\n";
+			cin >> choice;
+		} while ((choice != 1) && (choice != 2));
 
 		double totalLoad = 0.0;
 		switch (choice)
 		{
 		case 1:
 			cout << "You will be entering Insolation values\n";
-			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time.";
+			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time.\nThis number must be an integer value. Entering any other character will crash the program.\n";
 			cin >> numbIV;
 
 			while ((numbIV < MINLOADS) || (numbIV > MAXVALS))//verifies that the number is within the given range
@@ -72,8 +81,8 @@ int main()
 				cout << "Number must be between " << MINLOADS << " and " << MAXVALS << " . Please enter number again.\n";
 				cin >> numbIV;
 			}
-			cout << "You will be entering " << numbIV << " Insolation values.\n";// Echoes number
-
+			cout << "You will be entering " << numbIV << " Insolation values. Please enter numerical values only.\n";// Echoes number
+			
 			for (int m = 0; m < numbIV; m++)
 			{
 				cout << "\nEnter Insolation value " << m + 1 << " : ";
@@ -86,7 +95,14 @@ int main()
 			}
 			listPrint(InsolationVals, numbIV);//echoes insolation
 
-			break;
+			for (int i = 0; i < 3, i++)
+			{
+				for (int j = 0; j < 2; j++)
+				{
+					cout << "Location " << i << " at Latitude x[" << i 	<< "][ and Longitude " << j << "]: ";
+					cout << Location[i][j] << endl;
+				}
+			}
 
 		case 2:
 			cout << "You will be running a system analysis\n";
@@ -97,9 +113,7 @@ int main()
 				cout << "Input file opening failed.\n";
 				exit(1);
 			}
-// Now it is going to just reading from the file the word "Insonolation"
 			inStream >> aString;
-// Then a ":" followed by the insonolation value. This is where you need to be specific about how you read and write values
 			inStream >> InsolationVals[0];
 			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//echoes insonolation
 			stringstream geek(InsolationVals[0]);
@@ -107,7 +121,7 @@ int main()
 
 
 			// Retrieve and validate number of loads using a while
-			cout << "How many loads will you be powering?\n";
+			cout << "How many loads will you be powering?\nThis number must be an integer. Entering any other character will crash the program.\n";
 			cin >> NumberOfLoads;
 
 			while ((NumberOfLoads < MINLOADS) || (NumberOfLoads > MAXLOADS))//verifies that the number of loads is within the given range
@@ -126,13 +140,20 @@ int main()
 			do
 			{
 				cout << "\nWill you be entering Load demands in Watts or Amps?\nEnter 1 for Watts\nEnter 2 for Amps\n";
+				cout << "Enter integer numbers only. Any other character (.,/ etc.) will crash the program. Please enter carefully.\n";
 				cin >> choice;
+				do
+				{
+					cout << "Invalid Input: ";
+					cout << "Please enter either '1' or '2'\n";
+					cin >> choice;
+				}while ((choice != 1) && (choice != 2));
 
 				double totalLoad = 0.0;
 				switch (choice)
 				{
 				case 1:
-					cout << "You will be entering Loads in Watts\n";
+					cout << "You will be entering Loads in Watts. Please enter numerical values only.\n";
 
 					for (int j = 0; j < NumberOfLoads; j++)
 					{
@@ -170,7 +191,7 @@ int main()
 
 
 				case 2:
-					cout << "You will be entering Loads in Amps\n";
+					cout << "You will be entering Loads in Amps. Please enter numerical values only\n";
 
 					for (int k = 0; k < NumberOfLoads; k++)
 					{
@@ -217,7 +238,7 @@ int main()
 			cout << "\nThe Energy required to run the system for " << RunTime << " hours is " << Energy << " Kwh/day\n";
 			WattsNeeded = (Energy / AvgInsonolation) * conv; //Determines total Watts needed to generate enough energy for the system.
 			cout << "\nThe required panel wattage to power your loads is " << WattsNeeded << " W\n";
-			cout << "\nWhat wattage solar panels will you be using?\n";
+			cout << "\nWhat wattage solar panels will you be using? Please enter numerical values only\n";
 			cin >> panelWatts;
 
 			numbPanels = WattsNeeded / panelWatts;
@@ -326,105 +347,4 @@ void getHours(double& hours)
 }
 
 
-/*// Retrieve and validate number of loads using a while
-	cout << "How many loads will you be powering?\n";
-	cin >> NumberOfLoads;
 
-	while ((NumberOfLoads < MINLOADS) || (NumberOfLoads > MAXLOADS))//verifies that the number of loads is within the given range
-	{
-		cout << "Number of loads must be between " << MINLOADS << " and " << MAXLOADS << " loads. Please enter number again.\n";
-		cin >> NumberOfLoads;
-	}
-	cout << "You will be powering " << NumberOfLoads << " loads.\n\n";// Echoes number of loads
-
-	for (int i = 0; i < NumberOfLoads; i++)
-	{
-		cout << "\nEnter name of Load " << i + 1 << " : ";
-		cin >> LoadNames[i];
-	}
-		int choice;
-		do
-		{
-			cout << "\nWill you be entering Load demands in Watts or Amps?\nEnter 1 for Watts\nEnter 2 for Amps\n";
-			cin >> choice;
-
-			double totalLoad = 0.0;
-			switch (choice)
-			{
-			case 1:
-				cout << "You will be entering Loads in Watts\n";
-
-				for (int j = 0; j < NumberOfLoads; j++)
-				{
-					cout << "\nEnter power demand of Load " << j + 1 << " : ";
-					cin >> LoadPower[j];
-					totalLoad += LoadPower[j];
-				}
-
-				listPrint(LoadNames, LoadPower, NumberOfLoads);
-				cout << "\nThe total load is " << totalLoad << " watts";
-				LoadDmnd = PowerDmnd(totalLoad);
-				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
-				outStream << LoadDmnd;
-				break;
-
-
-			case 2:
-				cout << "You will be entering Loads in Amps\n";
-
-				for (int k = 0; k < NumberOfLoads; k++)
-				{
-					cout << "\nEnter current demand of Load " << k + 1 << " : ";
-					cin >> LoadCurrent[k];
-					totalLoad += LoadCurrent[k];
-				}
-
-				listPrint(LoadNames, LoadCurrent, load, defVoltage, NumberOfLoads);
-				totalLoad = totalLoad * defVoltage;
-				cout << "\nThe total load is " << totalLoad << " watts";
-				LoadDmnd = PowerDmnd(totalLoad);
-				cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
-				outStream << LoadDmnd;
-				break;
-
-			}
-		} while (choice < 1);
-
-		/*cout << "\nEnter the Average Insonolation value for desired panel location in " << Units << "\n";
-		cin >> AvgInsonolation;
-		cout << "The Average Insonolation is " << AvgInsonolation << " " << Units << "\n";//echoes insonolation
-
-		inStream >> AvgInsonolation;
-		cout << "The Average Insonolation is " << AvgInsonolation << " " << Units << "\n";//echoes insonolation
-
-		cout << "\nEnter number of hours the device will run per day\n";
-		cin >> RunTime;
-		Energy = RunTime * LoadDmnd; //Calculates the neccessary energy that needs to be generated by the solar panels.
-		cout << "\nThe Energy required to run the system for " << RunTime << " hours is " << Energy << " Kwh/day\n";
-		WattsNeeded = (Energy / AvgInsonolation) * conv; //Determines total Watts needed to generate enough energy for the system.
-		cout << "\nThe required panel wattage to power your loads is " << WattsNeeded << " W\n";
-		cout << "\nWhat wattage solar panels will you be using?\n";
-		cin >> panelWatts;
-
-		numbPanels = WattsNeeded / panelWatts;
-		cout << "\nYou will need " << ceil(numbPanels) << " solar panels to power your loads";*/
-
-/*char ans;
-			char ans1;
-			char result;
-			string target;
-			cout << "Would you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no";
-			cin >> ans;
-			do
-			{
-				cout << "Enter the Insolation value you want to search for";
-				cin >> target;
-				result = search(string InsolationVals, int numbIV, int target);
-				if (result == -1)
-					cout << target << " is not stored in the array";
-				else
-					cout << target << " is stored in array position " << result << endl;
-				cout << "Would you like to search again? Type y/n";
-				cin << ans1;
-
-			} while ((ans1 != 'n') && (ans1 != 'N'));*/
