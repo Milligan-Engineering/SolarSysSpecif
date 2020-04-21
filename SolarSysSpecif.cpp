@@ -95,7 +95,7 @@ int main()
 			}
 			listPrint(InsolationVals, numbIV);//echoes insolation
 
-			for (int i = 0; i < 3; i++) // need semi colons "<3; i" instead of comma "<3, i"
+			for (int i = 0; i < 3; i++) 
 			{
 				for (int j = 0; j < 2; j++)
 				{
