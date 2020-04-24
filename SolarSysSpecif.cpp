@@ -349,4 +349,3 @@ void getHours(double& hours)
 }
 
 
-
