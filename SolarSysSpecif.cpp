@@ -21,7 +21,7 @@ ofstream outStream;
 
 const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 10;
 const double conv = 1000.0;
-double AvgInsolation, AvgInsonolation = 4.0, Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd, load, hours;
+double Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panelWatts, LoadDmnd, load, hours;
 double defVoltage = 12.0, target, Latitude, Longitude;
 int NumberOfLoads, numbIV;
 
