@@ -35,8 +35,8 @@ char aString[] = "Average Insolation", ans, answ, result;
 double PowerDmnd(double totalLoad); //precondition: user inputs total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
 
-char search(double LoadPower[], const int MAXLOADS, double target);
-char search2(double LoadCurrent[], const int MAXLOADS, double target);
+//char search(double LoadPower[], const int MAXLOADS, double target);
+//char search2(double LoadCurrent[], const int MAXLOADS, double target);
 
 //void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
 //void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
