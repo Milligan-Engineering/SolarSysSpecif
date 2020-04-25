@@ -38,15 +38,31 @@ double PowerDmnd(double totalLoad); //precondition: user inputs total load
 char search(double LoadPower[], const int MAXLOADS, double target);
 char search2(double LoadCurrent[], const int MAXLOADS, double target);
 
-void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
-void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
+//void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
+//void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
 void listPrint(string InsolationVals[], int numbIV);
 void getHours(double& hours);
 void newLine();
 
+class loadInfo
+{
+public:
+
+	char search(double LoadPower[], const int MAXLOADS, double target);
+	char search2(double LoadCurrent[], const int MAXLOADS, double target);
+	void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
+	void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
+
+	string LoadNames[MAXLOADS];
+	double LoadPower[MAXLOADS];
+	double LoadCurrent[MAXLOADS];
+
+};
+
 int main()
 {
-	
+	loadInfo loads;
+
 	outStream.open("outfile.dat", ios::app);
 	if (outStream.fail())
 	{
@@ -136,7 +152,7 @@ int main()
 			for (int i = 0; i < NumberOfLoads; i++)
 			{
 				cout << "\nEnter name of Load " << i + 1 << " : ";
-				cin >> LoadNames[i];
+				cin >> loads.LoadNames[i];
 			}
 			int choice;
 			do
@@ -160,8 +176,8 @@ int main()
 					for (int j = 0; j < NumberOfLoads; j++)
 					{
 						cout << "\nEnter power demand of Load " << j + 1 << " : ";
-						cin >> LoadPower[j];
-						totalLoad += LoadPower[j];
+						cin >> loads.LoadPower[j];
+						totalLoad += loads.LoadPower[j];
 					}
 
 					cout << "\nWould you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no\n";
@@ -170,7 +186,7 @@ int main()
 					{
 						cout << "Enter the power value you want to search for\n";
 						cin >> target;
-						result = search(LoadPower, MAXLOADS, target);
+						result = loads.search(loads.LoadPower, MAXLOADS, target);
 						if (result == -1)
 						{
 							cout << target << " is not stored in the array\n";
@@ -184,7 +200,7 @@ int main()
 
 					} while ((answ != 'n') && (answ != 'N')); 
 
-					listPrint(LoadNames, LoadPower, NumberOfLoads);
+					loads.listPrint(loads.LoadNames, loads.LoadPower, NumberOfLoads);
 					cout << "\nThe total load is " << totalLoad << " watts";
 					LoadDmnd = PowerDmnd(totalLoad);
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
@@ -198,8 +214,8 @@ int main()
 					for (int k = 0; k < NumberOfLoads; k++)
 					{
 						cout << "\nEnter current demand of Load " << k + 1 << " : ";
-						cin >> LoadCurrent[k];
-						totalLoad += LoadCurrent[k];
+						cin >> loads.LoadCurrent[k];
+						totalLoad += loads.LoadCurrent[k];
 					}
 
 					cout << "\nWould you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no\n";
@@ -208,7 +224,7 @@ int main()
 					{
 						cout << "Enter the current value you want to search for\n";
 						cin >> target;
-						result = search2(LoadCurrent, MAXLOADS, target);
+						result = loads.search2(loads.LoadCurrent, MAXLOADS, target);
 						if (result == -1)
 						{
 							cout << target << " is not stored in the array\n";
@@ -222,7 +238,7 @@ int main()
 
 					} while ((answ != 'n') && (answ != 'N'));
 
-					listPrint(LoadNames, LoadCurrent, load, defVoltage, NumberOfLoads);
+					loads.listPrint(loads.LoadNames, loads.LoadCurrent, load, defVoltage, NumberOfLoads);
 			
 					totalLoad = totalLoad * defVoltage;
 					cout << "\nThe total load is " << totalLoad << " watts";
@@ -265,7 +281,7 @@ double PowerDmnd(double totalLoad) // function definition for load conversion ca
 	return convert;
 }
 
-char search(double LoadPower[], const int MAXLOADS, double target)
+char loadInfo::search(double LoadPower[], const int MAXLOADS, double target)
 {
 	int index = 0;
 	bool found = false;
@@ -280,7 +296,7 @@ char search(double LoadPower[], const int MAXLOADS, double target)
 		return - 1;
 }
 
-char search2(double LoadCurrent[], const int MAXLOADS, double target)
+char loadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)
 {
 	int index = 0;
 	bool found = false;
@@ -295,7 +311,7 @@ char search2(double LoadCurrent[], const int MAXLOADS, double target)
 		return -1;
 }
 
-void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
+void loadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
 {
 	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
@@ -305,7 +321,7 @@ void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
 return;
 }
 
-void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
+void loadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
 {
 	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
