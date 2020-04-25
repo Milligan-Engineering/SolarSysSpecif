@@ -52,3 +52,14 @@ void LoadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, 
 	}
 	return;
 }
+
+string LoadInfo::getName()
+{
+	return LoadNames[MAXLOAD];
+}
+
+void LoadInfo::setName(string in)
+{
+	LoadNames[MAXLOAD] = in;
+}
+
