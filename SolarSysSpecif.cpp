@@ -39,29 +39,10 @@ char aString[] = "Average Insolation", ans, answ, result;
 double PowerDmnd(double totalLoad); //precondition: user inputs total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
 
-//char search(double LoadPower[], const int MAXLOADS, double target);
-//char search2(double LoadCurrent[], const int MAXLOADS, double target);
-
-//void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
-//void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
 void listPrint(string InsolationVals[], int numbIV);
 void getHours(double& hours);
 void newLine();
 
-/*class loadInfo
-{
-public:
-
-	char search(double LoadPower[], const int MAXLOADS, double target);
-	char search2(double LoadCurrent[], const int MAXLOADS, double target);
-	void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
-	void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
-
-	string LoadNames[MAXLOADS];
-	double LoadPower[MAXLOADS];
-	double LoadCurrent[MAXLOADS];
-
-};*/
 
 int main()
 {
@@ -285,56 +266,6 @@ double PowerDmnd(double totalLoad) // function definition for load conversion ca
 	return convert;
 }
 
-/*char loadInfo::search(double LoadPower[], const int MAXLOADS, double target)
-{
-	int index = 0;
-	bool found = false;
-	while ((!found) && (index < MAXLOADS))
-		if (target == LoadPower[index])
-			found = true;
-		else
-			index++;
-	if (found)
-		return index;
-	else
-		return - 1;
-}
-
-char loadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)
-{
-	int index = 0;
-	bool found = false;
-	while ((!found) && (index < MAXLOADS))
-		if (target == LoadCurrent[index])
-			found = true;
-		else
-			index++;
-	if (found)
-		return index;
-	else
-		return -1;
-}
-
-void loadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
-{
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
-	{
-		cout << LoadNames[i] << " requires " << LoadPower[i] << " Watts\n";
-	}
-return;
-}
-
-void loadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
-{
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
-	{
-		load = LoadCurrent[i] * defVoltage;
-		cout << LoadNames[i] << " requires " << load << " Watts\n";
-	}
-	return;
-}*/
 
 void listPrint(string InsolationVals[], int numbIV)
 {
