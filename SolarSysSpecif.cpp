@@ -4,8 +4,8 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Added multidimensional array
-//Last Changed: 04/14/2020
+// Added Class files for loadInfo
+//Last Changed: 04/24/2020
 
 
 #include <iostream>
@@ -16,6 +16,10 @@
 #include <sstream>
 
 using namespace std;
+
+#include "stdafx.h"
+#include "LoadInfo.h"
+
 ifstream inStream;
 ofstream outStream; 
 
@@ -25,10 +29,10 @@ double Energy = 0.0, Current, totalLoad, numbPanels, RunTime, WattsNeeded, panel
 double defVoltage = 12.0, target, Latitude, Longitude;
 int NumberOfLoads, numbIV;
 
-double LoadPower[MAXLOADS], LoadCurrent[MAXLOADS], Location[3][2] = { {0,1}, {2,3}, {4,5} };
+double /*LoadPower[MAXLOADS], LoadCurrent[MAXLOADS],*/ Location[3][2] = { {0,1}, {2,3}, {4,5} };
 
 string Device, Units = "Kwh/day/m^2", Local;
-string LoadNames[MAXLOADS], InsolationVals[MAXVALS];
+string /*LoadNames[MAXLOADS],*/ InsolationVals[MAXVALS];
 
 char aString[] = "Average Insolation", ans, answ, result;
 
@@ -44,7 +48,7 @@ void listPrint(string InsolationVals[], int numbIV);
 void getHours(double& hours);
 void newLine();
 
-class loadInfo
+/*class loadInfo
 {
 public:
 
@@ -57,11 +61,11 @@ public:
 	double LoadPower[MAXLOADS];
 	double LoadCurrent[MAXLOADS];
 
-};
+};*/
 
 int main()
 {
-	loadInfo loads;
+	LoadInfo loads;
 
 	outStream.open("outfile.dat", ios::app);
 	if (outStream.fail())
@@ -193,7 +197,7 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << LoadNames[result] << endl << "\n";
+							cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
@@ -231,7 +235,7 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << LoadNames[result] << endl << "\n";
+							cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
@@ -281,7 +285,7 @@ double PowerDmnd(double totalLoad) // function definition for load conversion ca
 	return convert;
 }
 
-char loadInfo::search(double LoadPower[], const int MAXLOADS, double target)
+/*char loadInfo::search(double LoadPower[], const int MAXLOADS, double target)
 {
 	int index = 0;
 	bool found = false;
@@ -330,7 +334,7 @@ void loadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, 
 		cout << LoadNames[i] << " requires " << load << " Watts\n";
 	}
 	return;
-}
+}*/
 
 void listPrint(string InsolationVals[], int numbIV)
 {
