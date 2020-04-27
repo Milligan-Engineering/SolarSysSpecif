@@ -137,7 +137,11 @@ int main()
 			for (int i = 0; i < NumberOfLoads; i++)
 			{
 				cout << "\nEnter name of Load " << i + 1 << " : ";
-				cin >> loads.LoadNames[i];
+				// Need to use mutator here
+				string tempStr;
+				cin >> tempStr;
+				loads.setName(tempStr);
+	
 			}
 			int choice;
 			do
