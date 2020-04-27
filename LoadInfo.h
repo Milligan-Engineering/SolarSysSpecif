@@ -12,6 +12,8 @@ public:
 	string getName();
 	void setName(string in);
 
+	friend string printNames(string LoadNames[], char result);
+
 	double LoadPower[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	double LoadCurrent[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 

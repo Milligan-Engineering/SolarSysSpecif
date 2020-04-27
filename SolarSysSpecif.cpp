@@ -43,6 +43,7 @@ void listPrint(string InsolationVals[], int numbIV);
 void getHours(double& hours);
 void newLine();
 
+string printNames(string LoadNames[], char result);
 
 int main()
 {
@@ -182,7 +183,8 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
+							//cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
+							string printNames(LoadNames, result);
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
@@ -303,4 +305,8 @@ void getHours(double& hours)
 	} while ((ans != 'Y') && (ans != 'y'));
 }
 
+string printNames(string LoadNames[], char result)
+{
+	return LoadNames[result];
+}
 
