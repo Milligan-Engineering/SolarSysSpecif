@@ -3,6 +3,10 @@
 
 class LoadInfo
 {
+private:
+
+	string LoadNames[MAXLOAD];
+
 public:
 
 	char search(double LoadPower[], const int MAXLOAD, double target);
@@ -16,10 +20,6 @@ public:
 
 	double LoadPower[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	double LoadCurrent[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-private:
-
-	string LoadNames[MAXLOAD];
 
 };
 
