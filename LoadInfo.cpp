@@ -60,8 +60,7 @@ string LoadInfo::getName(char result)
 	return out;
 }
 
-void LoadInfo::setName(string in)
+void LoadInfo::setName(string in, int i)
 {
-	LoadNames[MAXLOAD] = in;
+	LoadNames[i] = in;
 }
-

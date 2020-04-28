@@ -19,16 +19,18 @@
 
 using namespace std;
 
+//declare file streams
 ifstream inStream;
 ofstream outStream; 
 
 const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 10;
-int NumberOfLoads, numbIV;
-double Current, totalLoad, RunTime, wattsNeeded, panelWatts, LoadDmnd, load, hours, defVoltage = 12.0, target, Latitude, Longitude, energyReq, insolation;
+int numbLoads, numbIV;
+double Current, RunTime, LoadDmnd, Latitude, Longitude;
+double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target, defVoltage = 12.0;
 double Location[3][2] = { {0,1}, {2,3}, {4,5} };
-string Device, Units = "Kwh/day/m^2", Local;
+string Device, Local, Units = "Kwh/day/m^2";
 string InsolationVals[MAXVALS];
-char aString[] = "Average Insolation", ans, answ, result;
+char ans, answ, result, aString[] = "AverageInsolation";
 
 double PowerDmnd(double totalLoad); //precondition: uses pre-defined varaible total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
@@ -44,34 +46,44 @@ void newLine();//precondition: user inputs any character
 
 double calcEnergy(double RunTime, double LoadDmnd);//precondition: uses predefined values for run time and load demand
 //postcondition: Function calculates the Energy required for the system and returns a variable of type double for energy required
-double calcWatts(double insolation);
 
+double calcWatts(double insolation);//precondition: uses predfined value for insolation and calls function calcEnergy 
+//postcondition: Function calculates the Wattage required to power the system and returns a variable of typ double for watts needed
 
-void listPrint(LoadInfo info, int NumberOfLoads);
-void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
+void listPrint(LoadInfo info, int NumberOfLoads);//precondition: friend function that can access class members
+//postcondition: Function prints the name and power for each load
+
+void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
+//Function calculates the power by multiplying the current and voltage then prints the name and power for each load
 
 
 int main()
 {
+	//declare class objects
 	LoadInfo loads;
 	LoadInfo info;
 
-	outStream.open("outfile.dat", ios::app);
-	if (outStream.fail())
+
+	outStream.open("outfile.dat", ios::app);//opens output file
+	if (outStream.fail())//exits program if output file opening fails
 	{
 		cout << "Output file opening failed.\n";
 		exit(1);
 	}
 
+
 	cout << "Welcome to the Solar System Specifier Program \n\n";
 	int choice;
+
+	//implements a swticth menu
 	do
 	{
-		cout << "\nWould you like to enter Insolation values or run a system analysis?\nEnter 1 for Insolation\nEnter 2 for Analysis\nPlease note that you must enter at least one Insolation value before running your first analysis\n";
-		cout << "Enter integer numbers only. Any other character (a.,/ etc.) will crash the program. Please enter carefully.\n";
+		cout << "\nWould you like to enter Insolation values or run a system analysis?\nEnter 1 for Insolation\nEnter 2 for Analysis"
+			<< "\nPlease note that you must enter at least one Insolation value before running your first analysis\n"
+			<< "\nEnter integer numbers only. Any other character (a.,/ etc.) will crash the program. Please enter carefully.\n";
 		cin >> choice;
 		
-		while ((choice != 1) && (choice != 2))
+		while ((choice != 1) && (choice != 2))//validates choice input
 		{
 			cout << "Invalid Input: ";
 			cout << "Please enter either '1' or '2'\n";
@@ -79,110 +91,134 @@ int main()
 		} 
 
 		double totalLoad = 0.0;
-		switch (choice)
+		switch (choice)//switches between entering Insolation values and running a system analyses
 		{
 		case 1:
 			cout << "You will be entering Insolation values\n";
-			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time.\nThis number must be an integer value. Entering any other character will crash the program.\n";
+			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time."
+				<< "\nThis number must be an integer value. Entering any other character will crash the program.\n";
 			cin >> numbIV;
 
-			while ((numbIV < MINLOADS) || (numbIV > MAXVALS))//verifies that the number is within the given range
+			//verifies that the number is within the given range
+			while ((numbIV < MINLOADS) || (numbIV > MAXVALS))
 			{
 				cout << "Number must be between " << MINLOADS << " and " << MAXVALS << " . Please enter number again.\n";
 				cin >> numbIV;
 			}
-			cout << "You will be entering " << numbIV << " Insolation values. Please enter numerical values only.\n";// Echoes number
+			cout << "You will be entering " << numbIV << " Insolation values."
+				<< "\nPlease enter numerical values only.\n";// Echoes number of values
 			
+			//retrieves user input of insolation values
 			for (int m = 0; m < numbIV; m++)
 			{
 				cout << "\nEnter Insolation value " << m + 1 << " : ";
 				cin >> InsolationVals[m];
 			}
+
+			//sends user input to output file
 			for (int k = 0; k < numbIV; k++)
 			{
-
-				outStream << aString << " : " << InsolationVals[k] << endl; //Outputs array to txtFile
+				outStream << aString << " " << InsolationVals[k] << endl; //Outputs array to txtFile
 			}
-			listPrint(InsolationVals, numbIV);//echoes insolation
 
+			listPrint(InsolationVals, numbIV);//prints Insolation values
+
+			cout << "\nHere is a multidimensional array of system locations\n";
+
+			//Prints multidimensional array of locations
 			for (int i = 0; i < 3; i++) 
 			{
 				for (int j = 0; j < 2; j++)
 				{
-					cout << "Location " << i << " at Latitude x[" << i 	<< "][ and Longitude " << j << "]: ";
+					cout << "Location " << i << " at Latitude x[" << i 	<< "] and Longitude [" << j << "]: ";
 					cout << Location[i][j] << endl;
 				}
-			}
+			}//end of entering Insolation values
+			break;
 
 		case 2:
-			cout << "You will be running a system analysis\n";
+			cout << "\nYou will be running a system analysis\n";
 
-			inStream.open("outfile.dat");
-			if (inStream.fail())
+			inStream.open("outfile.dat");//opens input file
+			if (inStream.fail())//exits program is input file opening fails
 			{
 				cout << "Input file opening failed.\n";
 				exit(1);
 			}
+
+			//reads Insolation value from file 
 			inStream >> aString;
 			inStream >> InsolationVals[0];
-			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//echoes insonolation
+			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//prints Insolation value retrieved from file 
 			
-			insolation = stod(InsolationVals[0]);
+			insolation = stod(InsolationVals[0]);//converts file input from string to double
 
+			// Retrieves number of loads
+			cout << "How many loads will you be powering?\nThis number must be an integer."
+				<< "Entering any other character will crash the program.\n";
+			cin >> numbLoads;
 
-			// Retrieve and validate number of loads using a while
-			cout << "How many loads will you be powering?\nThis number must be an integer. Entering any other character will crash the program.\n";
-			cin >> NumberOfLoads;
-
-			while ((NumberOfLoads < MINLOADS) || (NumberOfLoads > MAXLOADS))//verifies that the number of loads is within the given range
+			//Validates that the input lies within the given range
+			while ((numbLoads < MINLOADS) || (numbLoads > MAXLOADS))//verifies that the number of loads is within the given range
 			{
 				cout << "Number of loads must be between " << MINLOADS << " and " << MAXLOADS << " loads. Please enter number again.\n";
-				cin >> NumberOfLoads;
+				cin >> numbLoads;
 			}
-			cout << "You will be powering " << NumberOfLoads << " loads.\n";// Echoes number of loads
 
-			for (int i = 0; i < NumberOfLoads; i++)
+			cout << "You will be powering " << numbLoads << " loads.\n";// Echoes number of loads
+
+			//Retrieves names of loads and stores them in the class LoadInfo
+			for (int i = 0; i < numbLoads; i++)
 			{
 				cout << "\nEnter name of Load " << i + 1 << " : ";
-				// Need to use mutator here
 				string tempStr;
 				cin >> tempStr;
-				loads.setName(tempStr);
-	
+				loads.setName(tempStr, i);//mutator function required to send names to the private member LoadNames in the class LoadInfo
 			}
+
 			int choice;
+
+			//implements a new switch menu
 			do
 			{
-				cout << "\nWill you be entering Load demands in Watts or Amps?\nEnter 1 for Watts\nEnter 2 for Amps\n";
-				cout << "Enter integer numbers only. Any other character (.,/ etc.) will crash the program. Please enter carefully.\n";
+				cout << "\nWill you be entering Load demands in Watts or Amps?\nEnter 1 for Watts\nEnter 2 for Amps\n"
+					<< "Enter integer numbers only. Any other character (.,/ etc.) will crash the program."
+					<< "\nPlease enter carefully.\n";
 				cin >> choice;
-				do
+
+				//validates choice input 
+				while ((choice != 1) && (choice != 2))
 				{
 					cout << "Invalid Input: ";
 					cout << "Please enter either '1' or '2'\n";
 					cin >> choice;
-				}while ((choice != 1) && (choice != 2));
+				}
 
 				double totalLoad = 0.0;
-				switch (choice)
+
+				switch (choice)// swithces between power-entry and current-entry system anaysis 
 				{
 				case 1:
 					cout << "You will be entering Loads in Watts. Please enter numerical values only.\n";
 
-					for (int j = 0; j < NumberOfLoads; j++)
+					//retrives power values for each load and stores them in the class LoadInfo
+					for (int j = 0; j < numbLoads; j++)
 					{
 						cout << "\nEnter power demand of Load " << j + 1 << " : ";
 						cin >> loads.LoadPower[j];
-						totalLoad += loads.LoadPower[j];
+						totalLoad += loads.LoadPower[j];//sums the loads in the array to get a value for the total load
 					}
 
 					cout << "\nWould you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no\n";
 					cin >> ans;
-					do
+
+					//checks array for user specified value
+					while ((ans != 'n') && (ans != 'N'))
 					{
 						cout << "Enter the power value you want to search for\n";
 						cin >> target;
-						result = loads.search(loads.LoadPower, MAXLOADS, target);
+
+						result = loads.search(loads.LoadPower, MAXLOADS, target);//calls member function to search member variable LoadPower
 						if (result == -1)
 						{
 							cout << target << " is not stored in the array\n";
@@ -190,19 +226,23 @@ int main()
 						else
 						{
 							string tempStrb;
-							tempStrb = loads.getName(result);
+							tempStrb = loads.getName(result);//function accesses private member variable LoadNames and stores name in temporary string
 							cout << target << " is stored in array position " << tempStrb << endl << "\n";	
 						}
 
 						cout << "Would you like to search again? Type y/n\n";
-						cin >> answ;
+						cin >> ans;
 
-					} while ((answ != 'n') && (answ != 'N')); 
+					}  
+		
+					listPrint(info, numbLoads);//friend function prints info contained in class LoadInfo
 
-					listPrint(info, NumberOfLoads);
 					cout << "\nThe total load is " << totalLoad << " watts";
-					LoadDmnd = PowerDmnd(totalLoad);
+
+					LoadDmnd = PowerDmnd(totalLoad);//calls function to convert power demand
+
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
+
 					outStream << LoadDmnd;
 					break;
 
@@ -210,7 +250,7 @@ int main()
 				case 2:
 					cout << "You will be entering Loads in Amps. Please enter numerical values only\n";
 
-					for (int k = 0; k < NumberOfLoads; k++)
+					for (int k = 0; k < numbLoads; k++)
 					{
 						cout << "\nEnter current demand of Load " << k + 1 << " : ";
 						cin >> loads.LoadCurrent[k];
@@ -219,7 +259,7 @@ int main()
 
 					cout << "\nWould you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no\n";
 					cin >> ans;
-					do
+					while ((answ != 'n') && (answ != 'N'))
 					{
 						cout << "Enter the current value you want to search for\n";
 						cin >> target;
@@ -230,14 +270,16 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << loads.getName(result) << endl << "\n";
+							string name;
+							name = loads.getName(result);
+							cout << target << " is stored in array position " << name << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
 
-					} while ((answ != 'n') && (answ != 'N'));
+					} 
 
-					listPrintb(info, load, defVoltage, NumberOfLoads);
+					listPrintb(info, load, defVoltage, numbLoads);
 			
 					totalLoad = totalLoad * defVoltage;
 					cout << "\nThe total load is " << totalLoad << " watts";
@@ -277,27 +319,31 @@ int main()
 		cout << "\nThank you for using the Solar System Specifier Program! Press any key to exit.";
 	return 0;
 }
+//end of main
 
 
+
+
+//function definitions:
 double PowerDmnd(double totalLoad)//function definition for conversion calculation of the total load
 {
 	const double conv = 1000.0;
 	double convert;
-	convert = totalLoad / conv;
+	convert = totalLoad / conv;//converts from Watts to Kilowatts 
 	return convert;
 }
 
 
 void listPrint(string InsolationVals[], int numbIV)//function definition for printing insolation values
 {
-	for (int i = 0; i < NumberOfLoads; i++)
+	for (int i = 0; i < numbLoads; i++)
 	{
 		cout << "\nAverage Insolation " << i + 1 << " is " << InsolationVals[i] << Units << "\n\n";
 	}
 	return;
 }
 
-void newLine()
+void newLine()//function definition for printing a new line
 {
 	char symbol;
 	do
@@ -306,7 +352,7 @@ void newLine()
 	} while (symbol != '\n');
 }
 
-void getHours(double& hours)
+void getHours(double& hours)//function definition for retrieving and validating number of hours
 {
 	char ans;
 	do
@@ -320,12 +366,8 @@ void getHours(double& hours)
 	} while ((ans != 'Y') && (ans != 'y'));
 }
 
-string printNames(string LoadNames[], char result)
-{
-	return LoadNames[result];
-}
 
-double calcEnergy(double RunTime, double LoadDmnd)
+double calcEnergy(double RunTime, double LoadDmnd)//function definition for calculating energy
 {
 	double Energy = 0.0;
 	const double conv = 1000.0;
@@ -334,31 +376,31 @@ double calcEnergy(double RunTime, double LoadDmnd)
 	return Energy;
 }
 
-double calcWatts(double insolation)
+double calcWatts(double insolation)//function definition for calculating watts 
 {
 	double Energy = 0.0;
 	const double conv = 1000.0;
 	double watts;
 
-	Energy = calcEnergy(RunTime, LoadDmnd);
-	watts = (Energy / insolation) * conv; //Determines total Watts needed to generate enough energy for the system.
+	Energy = calcEnergy(RunTime, LoadDmnd);//calls function that calculates the energy required and sets that value equal to a new variable
+	watts = (Energy / insolation) * conv; //calculates needed power in KW and uses a conversion factor to get power in Watts
 	return watts;
 }
 
-void listPrint(LoadInfo info, int NumberOfLoads)
+void listPrint(LoadInfo info, int numbLoads)//function definition for friend function that prints load names and powers
 {
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
+	newLine();
+	for (int i = 0; i < numbLoads; i++)
 	{
 		cout << info.LoadNames[i] << " requires " << info.LoadPower[i] << " Watts\n";
 	}
 	return;
 }
 
-void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads)
+void listPrintb(LoadInfo info, double load, double defVoltage, int numbLoads)//function definition for friend function that prints load names and powers
 {
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
+	newLine();
+	for (int i = 0; i < numbLoads; i++)
 	{
 		load = info.LoadCurrent[i] * defVoltage;
 		cout << info.LoadNames[i] << " requires " << load << " Watts\n";

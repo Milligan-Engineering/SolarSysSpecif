@@ -14,7 +14,7 @@ public:
 	//void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
 	//void listPrintb(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
 	string getName(char result);
-	void setName(string in);
+	void setName(string in, int i);
 
 	friend void listPrint(LoadInfo info, int NumberOfLoads);
 	friend void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
