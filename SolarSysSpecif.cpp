@@ -222,7 +222,7 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
+							cout << target << " is stored in array position " << printNames(LoadNames, result) << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
