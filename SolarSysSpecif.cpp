@@ -184,7 +184,11 @@ int main()
 						else
 						{
 							//cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
-							string printNames(LoadNames, result);
+							// string printNames(LoadNames, result);
+							string tempStrb;
+							tempStrb = loads.getName(out, result);
+							cout << tempStrb;
+							
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;

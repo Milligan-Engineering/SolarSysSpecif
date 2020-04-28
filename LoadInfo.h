@@ -13,7 +13,7 @@ public:
 	char search2(double LoadCurrent[], const int MAXLOAD, double target);
 	void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
 	void listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
-	string getName();
+	string getName(string out, char result);
 	void setName(string in);
 
 	friend string printNames(string LoadNames[], char result);
