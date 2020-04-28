@@ -32,7 +32,7 @@ char LoadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)
 		return -1;
 }
 
-void LoadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
+/*void LoadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
 {
 	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
@@ -40,9 +40,9 @@ void LoadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoa
 		cout << LoadNames[i] << " requires " << LoadPower[i] << " Watts\n";
 	}
 	return;
-}
+}*/
 
-void LoadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
+/*void LoadInfo::listPrintb(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
 {
 	cout << "\n";
 	for (int i = 0; i < NumberOfLoads; i++)
@@ -51,10 +51,11 @@ void LoadInfo::listPrint(string LoadNames[], double LoadCurrent[], double load, 
 		cout << LoadNames[i] << " requires " << load << " Watts\n";
 	}
 	return;
-}
+}*/
 
-string LoadInfo::getName(string out, char result)
+string LoadInfo::getName(char result)
 {
+	string out;
 	LoadNames[result] = out;
 	return out;
 }

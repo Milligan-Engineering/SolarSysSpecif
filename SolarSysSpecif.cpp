@@ -2,10 +2,10 @@
 //File Name: SolarSysSpecif.cpp
 //Author: Erin Forgety
 //Email Address: efforgety@my.milligan.edu
-//Term Project
+//Term Project: Solar System Specifier
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Added Class files for loadInfo
-//Last Changed: 04/24/2020
+// Added accessors and friend functions 
+//Last Changed: 04/28/2020
 
 
 #include <iostream>
@@ -46,11 +46,15 @@ double calcEnergy(double RunTime, double LoadDmnd);//precondition: uses predefin
 //postcondition: Function calculates the Energy required for the system and returns a variable of type double for energy required
 double calcWatts(double insolation);
 
-string printNames(string LoadNames[], char result);
+
+void listPrint(LoadInfo info, int NumberOfLoads);
+void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
+
 
 int main()
 {
 	LoadInfo loads;
+	LoadInfo info;
 
 	outStream.open("outfile.dat", ios::app);
 	if (outStream.fail())
@@ -185,19 +189,17 @@ int main()
 						}
 						else
 						{
-							//cout << target << " is stored in array position " << loads.LoadNames[result] << endl << "\n";
-							// string printNames(LoadNames, result);
 							string tempStrb;
-							tempStrb = loads.getName(out, result);
-							cout << tempStrb;
-							
+							tempStrb = loads.getName(result);
+							cout << target << " is stored in array position " << tempStrb << endl << "\n";	
 						}
+
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
 
 					} while ((answ != 'n') && (answ != 'N')); 
 
-					loads.listPrint(loads.LoadNames, loads.LoadPower, NumberOfLoads);
+					listPrint(info, NumberOfLoads);
 					cout << "\nThe total load is " << totalLoad << " watts";
 					LoadDmnd = PowerDmnd(totalLoad);
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
@@ -228,14 +230,14 @@ int main()
 						}
 						else
 						{
-							cout << target << " is stored in array position " << printNames(LoadNames, result) << endl << "\n";
+							cout << target << " is stored in array position " << loads.getName(result) << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
 						cin >> answ;
 
 					} while ((answ != 'n') && (answ != 'N'));
 
-					loads.listPrint(loads.LoadNames, loads.LoadCurrent, load, defVoltage, NumberOfLoads);
+					listPrintb(info, load, defVoltage, NumberOfLoads);
 			
 					totalLoad = totalLoad * defVoltage;
 					cout << "\nThe total load is " << totalLoad << " watts";
@@ -343,4 +345,23 @@ double calcWatts(double insolation)
 	return watts;
 }
 
+void listPrint(LoadInfo info, int NumberOfLoads)
+{
+	cout << "\n";
+	for (int i = 0; i < NumberOfLoads; i++)
+	{
+		cout << info.LoadNames[i] << " requires " << info.LoadPower[i] << " Watts\n";
+	}
+	return;
+}
 
+void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads)
+{
+	cout << "\n";
+	for (int i = 0; i < NumberOfLoads; i++)
+	{
+		load = info.LoadCurrent[i] * defVoltage;
+		cout << info.LoadNames[i] << " requires " << load << " Watts\n";
+	}
+	return;
+}
