@@ -400,7 +400,7 @@ double calcWatts(double insolation)//function definition for calculating watts
 	return;
 }
 
-void listPrintb(LoadInfo info, double load, double defVoltage, int numbLoads)//function definition for friend function that prints load names and powers
+void listPrint(LoadInfo info, double load, double defVoltage, int numbLoads)//function definition for friend function that prints load names and powers
 {
 	newLine();
 	for (int i = 0; i < numbLoads; i++)
@@ -414,13 +414,13 @@ void listPrintb(LoadInfo info, double load, double defVoltage, int numbLoads)//f
 /*void listPrint(LoadInfo info, int NumberOfLoads);//precondition: friend function that can access class members
 //postcondition: Function prints the name and power for each load
 
-void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
+void listPrint(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
 //Function calculates the power by multiplying the current and voltage then prints the name and power for each load*/
 
 //listPrint(info, numbLoads);//friend function prints info contained in class LoadInfo
 
-//listPrintb(info, load, defVoltage, numbLoads);
+//listPrint(info, load, defVoltage, numbLoads);
 
 //friend void listPrint(LoadInfo info, int NumberOfLoads);
 
-//friend void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
+//friend void listPrint(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
