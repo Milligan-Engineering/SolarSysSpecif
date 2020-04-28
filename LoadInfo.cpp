@@ -2,7 +2,7 @@
 #include "LoadInfo.h"
 #include "stdafx.h"
 
-char LoadInfo::search(double LoadPower[], const int MAXLOADS, double target)
+char LoadInfo::search(double LoadPower[], const int MAXLOADS, double target)//function definition for search member function
 {
 	int index = 0;
 	bool found = false;
@@ -17,7 +17,7 @@ char LoadInfo::search(double LoadPower[], const int MAXLOADS, double target)
 		return -1;
 }
 
-char LoadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)
+char LoadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)//function definition for second search member function
 {
 	int index = 0;
 	bool found = false;
@@ -32,35 +32,14 @@ char LoadInfo::search2(double LoadCurrent[], const int MAXLOADS, double target)
 		return -1;
 }
 
-/*void LoadInfo::listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads)
-{
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
-	{
-		cout << LoadNames[i] << " requires " << LoadPower[i] << " Watts\n";
-	}
-	return;
-}*/
-
-/*void LoadInfo::listPrintb(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads)
-{
-	cout << "\n";
-	for (int i = 0; i < NumberOfLoads; i++)
-	{
-		load = LoadCurrent[i] * defVoltage;
-		cout << LoadNames[i] << " requires " << load << " Watts\n";
-	}
-	return;
-}*/
-
-string LoadInfo::getName(char result)
+string LoadInfo::getName(char result)//function definition for accessor 
 {
 	string out;
-	LoadNames[result] = out;
+	out = LoadNames[result];
 	return out;
 }
 
-void LoadInfo::setName(string in, int i)
+void LoadInfo::setName(string in, int i)//function definition for mutator
 {
 	LoadNames[i] = in;
 }

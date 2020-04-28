@@ -4,7 +4,7 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project: Solar System Specifier
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Added accessors and friend functions 
+// Finalizing details for presentation 
 //Last Changed: 04/28/2020
 
 
@@ -23,7 +23,7 @@ using namespace std;
 ifstream inStream;
 ofstream outStream; 
 
-const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 10;
+const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 100;
 int numbLoads, numbIV;
 double Current, RunTime, LoadDmnd, Latitude, Longitude;
 double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target, defVoltage = 12.0;
@@ -49,12 +49,6 @@ double calcEnergy(double RunTime, double LoadDmnd);//precondition: uses predefin
 
 double calcWatts(double insolation);//precondition: uses predfined value for insolation and calls function calcEnergy 
 //postcondition: Function calculates the Wattage required to power the system and returns a variable of typ double for watts needed
-
-void listPrint(LoadInfo info, int NumberOfLoads);//precondition: friend function that can access class members
-//postcondition: Function prints the name and power for each load
-
-void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
-//Function calculates the power by multiplying the current and voltage then prints the name and power for each load
 
 
 int main()
@@ -91,6 +85,7 @@ int main()
 		} 
 
 		double totalLoad = 0.0;
+
 		switch (choice)//switches between entering Insolation values and running a system analyses
 		{
 		case 1:
@@ -105,6 +100,7 @@ int main()
 				cout << "Number must be between " << MINLOADS << " and " << MAXVALS << " . Please enter number again.\n";
 				cin >> numbIV;
 			}
+
 			cout << "You will be entering " << numbIV << " Insolation values."
 				<< "\nPlease enter numerical values only.\n";// Echoes number of values
 			
@@ -134,6 +130,7 @@ int main()
 					cout << Location[i][j] << endl;
 				}
 			}//end of entering Insolation values
+			
 			break;
 
 		case 2:
@@ -235,7 +232,6 @@ int main()
 
 					}  
 		
-					listPrint(info, numbLoads);//friend function prints info contained in class LoadInfo
 
 					cout << "\nThe total load is " << totalLoad << " watts";
 
@@ -243,27 +239,29 @@ int main()
 
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 
-					outStream << LoadDmnd;
 					break;
 
 
 				case 2:
 					cout << "You will be entering Loads in Amps. Please enter numerical values only\n";
 
+					//retrieves current values and places them in their member variable
 					for (int k = 0; k < numbLoads; k++)
 					{
 						cout << "\nEnter current demand of Load " << k + 1 << " : ";
 						cin >> loads.LoadCurrent[k];
-						totalLoad += loads.LoadCurrent[k];
+						totalLoad += loads.LoadCurrent[k];//sums currents in array to get a value for the total current
 					}
 
 					cout << "\nWould you like to check the array you filled for a target value?\nType 'y' for yes or 'n' for no\n";
 					cin >> ans;
+
+					//searches array for a user specified value
 					while ((answ != 'n') && (answ != 'N'))
 					{
 						cout << "Enter the current value you want to search for\n";
 						cin >> target;
-						result = loads.search2(loads.LoadCurrent, MAXLOADS, target);
+						result = loads.search2(loads.LoadCurrent, MAXLOADS, target);//calls member function to perform seach
 						if (result == -1)
 						{
 							cout << target << " is not stored in the array\n";
@@ -271,7 +269,7 @@ int main()
 						else
 						{
 							string name;
-							name = loads.getName(result);
+							name = loads.getName(result);//accesses private member variable LoadNames
 							cout << target << " is stored in array position " << name << endl << "\n";
 						}
 						cout << "Would you like to search again? Type y/n\n";
@@ -279,13 +277,14 @@ int main()
 
 					} 
 
-					listPrintb(info, load, defVoltage, numbLoads);
 			
-					totalLoad = totalLoad * defVoltage;
+					totalLoad = totalLoad * defVoltage;//calculates load by multiplying total current by default volatage
 					cout << "\nThe total load is " << totalLoad << " watts";
-					LoadDmnd = PowerDmnd(totalLoad);
+
+					LoadDmnd = PowerDmnd(totalLoad);//calls function to convert to Kw and stores value in LoadDmnd
+
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
-					outStream << LoadDmnd;
+			
 					break;
 
 				}
@@ -387,7 +386,11 @@ double calcWatts(double insolation)//function definition for calculating watts
 	return watts;
 }
 
-void listPrint(LoadInfo info, int numbLoads)//function definition for friend function that prints load names and powers
+
+
+//functions in progress
+
+/*void listPrint(LoadInfo info, int numbLoads)//function definition for friend function that prints load names and powers
 {
 	newLine();
 	for (int i = 0; i < numbLoads; i++)
@@ -406,4 +409,18 @@ void listPrintb(LoadInfo info, double load, double defVoltage, int numbLoads)//f
 		cout << info.LoadNames[i] << " requires " << load << " Watts\n";
 	}
 	return;
-}
+}*/
+
+/*void listPrint(LoadInfo info, int NumberOfLoads);//precondition: friend function that can access class members
+//postcondition: Function prints the name and power for each load
+
+void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
+//Function calculates the power by multiplying the current and voltage then prints the name and power for each load*/
+
+//listPrint(info, numbLoads);//friend function prints info contained in class LoadInfo
+
+//listPrintb(info, load, defVoltage, numbLoads);
+
+//friend void listPrint(LoadInfo info, int NumberOfLoads);
+
+//friend void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);

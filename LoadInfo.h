@@ -9,16 +9,21 @@ private:
 
 public:
 
-	char search(double LoadPower[], const int MAXLOAD, double target);
-	char search2(double LoadCurrent[], const int MAXLOAD, double target);
-	//void listPrint(string LoadNames[], double LoadPower[], int NumberOfLoads);
-	//void listPrintb(string LoadNames[], double LoadCurrent[], double load, double defVoltage, int NumberOfLoads);
-	string getName(char result);
-	void setName(string in, int i);
+	char search(double LoadPower[], const int MAXLOAD, double target);//precondition: user enters a variable of type double
+	//postcondition: function returns a character "-1" if target not found and a character displaying the corresponding array position if found
+	
+	char search2(double LoadCurrent[], const int MAXLOAD, double target);//precondition: user enters a variable of type double
+	//postcondition: function returns a character "-1" if target not found and a character displaying the corresponding array position if found
+	
+	string getName(char result);//precondition: accessor function searches private member variable LoadNames
+	//postcondition: function returns a string containg the desired array variable of the private member variable LoadNames
+	
+	void setName(string in, int i);//precondition: mutator function takes user inputted strings
+	//postcondition: function places input strings in corresponding array positions of private member variable LoadNames
 
-	friend void listPrint(LoadInfo info, int NumberOfLoads);
-	friend void listPrintb(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
 
+
+	//initialized member variables
 	double LoadPower[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	double LoadCurrent[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
