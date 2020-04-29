@@ -4,33 +4,18 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project: Solar System Specifier
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-//Added constructors
+//Fixed listPrint
 //Last Changed: 04/28/2020
 
 
 #include <iostream>
 #include <string>
-#include <numeric>
 #include <cmath>
 #include <fstream>
-#include <sstream>
 #include "stdafx.h"
 #include "LoadInfo.h"
 
 using namespace std;
-
-//declare file streams
-ifstream inStream;
-ofstream outStream; 
-
-const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 100;
-int numbLoads, numbIV;
-double Current, RunTime, LoadDmnd, Latitude, Longitude;
-double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target, defVoltage = 12.0;
-double Location[3][2] = { {0,1}, {2,3}, {4,5} };
-string Device, Local, name, Units = "Kwh/day/m^2";
-string InsolationVals[MAXVALS];
-char ans, answ, result, aString[] = "AverageInsolation";
 
 double PowerDmnd(double totalLoad); //precondition: uses pre-defined varaible total load
 //postcondition: Function returns a value of variable type double after converting the power demand from watts to kilowatts
@@ -51,9 +36,27 @@ double calcWatts(double insolation);//precondition: uses predfined value for ins
 //postcondition: Function calculates the Wattage required to power the system and returns a variable of typ double for watts needed
 
 
+//declare variables
+const int MINLOADS = 1, MAXLOADS = 10, MAXVALS = 100;
+const double defVoltage = 12.0;
+int numbLoads, numbIV;
+double Current, RunTime, LoadDmnd, Latitude, Longitude;
+double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target;
+double Location[3][2] = { {0,1}, {2,3}, {4,5} };
+string Device, Local, name, Units = "Kwh/day/m^2";
+string InsolationVals[MAXVALS];
+char ans, answ, result, aString[] = "AverageInsolation";
+
+
+//declare file streams
+ifstream inStream;
+ofstream outStream;
+
+
+
 int main()
 {
-	//declare class objects
+	//declare class object
 	LoadInfo loads;
 
 	outStream.open("outfile.dat", ios::app);//opens output file
@@ -127,14 +130,14 @@ int main()
 					cout << "Location " << i << " at Latitude x[" << i 	<< "] and Longitude [" << j << "]: ";
 					cout << Location[i][j] << endl;
 				}
-			}//end of entering Insolation values
+			}
 			
+			//end of entering Insolation values
 			break;
 
 		case 2:
 			cout << "\nYou will be running a system analysis\n";
 
-			//LoadInfo(0.0, 0.0);//intializes member vairables LoadPower and LoadCurrent
 
 			inStream.open("outfile.dat");//opens input file
 			if (inStream.fail())//exits program is input file opening fails
@@ -318,7 +321,7 @@ int main()
 		inStream.close();
 		outStream.close();
 
-		cout << "\nThank you for using the Solar System Specifier Program! Press any key to exit.";
+		cout << "\nThank you for using the Solar System Specifier Program!";
 	return 0;
 }
 //end of main
@@ -334,7 +337,6 @@ double PowerDmnd(double totalLoad)//function definition for conversion calculati
 	convert = totalLoad / conv;//converts from Watts to Kilowatts 
 	return convert;
 }
-
 
 void listPrint(string InsolationVals[], int numbIV)//function definition for printing insolation values
 {
@@ -367,7 +369,6 @@ void getHours(double& hours)//function definition for retrieving and validating 
 		newLine();
 	} while ((ans != 'Y') && (ans != 'y'));
 }
-
 
 double calcEnergy(double RunTime, double LoadDmnd)//function definition for calculating energy
 {
