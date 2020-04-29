@@ -4,7 +4,7 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project: Solar System Specifier
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-// Finalizing details for presentation 
+//Added constructors
 //Last Changed: 04/28/2020
 
 
@@ -135,6 +135,8 @@ int main()
 
 		case 2:
 			cout << "\nYou will be running a system analysis\n";
+
+			LoadInfo(0.0, 0.0);//intializes member vairables LoadPower and LoadCurrent
 
 			inStream.open("outfile.dat");//opens input file
 			if (inStream.fail())//exits program is input file opening fails

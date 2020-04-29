@@ -2,6 +2,20 @@
 #include "LoadInfo.h"
 #include "stdafx.h"
 
+LoadInfo::LoadInfo(double x, double y)//function definition for intializing member variables
+{
+	for (int i = 0; i < MAXLOAD; i++)
+	{
+		LoadPower[i] = x;
+		LoadCurrent[i] = y;
+	}
+}
+
+LoadInfo::LoadInfo()//defualt constructor 
+{
+	//intentionally empty
+}
+
 char LoadInfo::search(double LoadPower[], const int MAXLOADS, double target)//function definition for search member function
 {
 	int index = 0;

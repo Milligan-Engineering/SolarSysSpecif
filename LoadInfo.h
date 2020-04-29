@@ -9,6 +9,12 @@ private:
 
 public:
 
+	LoadInfo(double x, double y);//precondition: basic constructor
+	//postcondition: initializes 
+
+	LoadInfo();//precondition: default constructor
+	//postcondition: satisfies compiler
+
 	char search(double LoadPower[], const int MAXLOAD, double target);//precondition: user enters a variable of type double
 	//postcondition: function returns a character "-1" if target not found and a character displaying the corresponding array position if found
 	
@@ -23,9 +29,9 @@ public:
 
 
 
-	//initialized member variables
-	double LoadPower[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	double LoadCurrent[MAXLOAD] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	//member variables:
+	double LoadPower[MAXLOAD];
+	double LoadCurrent[MAXLOAD];
 
 };
 
