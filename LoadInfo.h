@@ -9,10 +9,10 @@ private:
 
 public:
 
-	LoadInfo(double x, double y);//precondition: basic constructor
+	//LoadInfo(double x, double y);//precondition: basic constructor
 	//postcondition: initializes 
 
-	LoadInfo();//precondition: default constructor
+	//LoadInfo();//precondition: default constructor
 	//postcondition: satisfies compiler
 
 	char search(double LoadPower[], const int MAXLOAD, double target);//precondition: user enters a variable of type double
@@ -23,15 +23,23 @@ public:
 	
 	string getName(char result);//precondition: accessor function searches private member variable LoadNames
 	//postcondition: function returns a string containg the desired array variable of the private member variable LoadNames
-	
+
+	string getName(int i);//precondition: accessor function searches private member variable LoadNames
+	//postcondition: function returns a string containg the desired array variable of the private member variable LoadNames
+
 	void setName(string in, int i);//precondition: mutator function takes user inputted strings
 	//postcondition: function places input strings in corresponding array positions of private member variable LoadNames
 
+	void listPrint(string name, double LoadPower[], int numbLoads);//precondtion: declared member variables 
+	//postcondition: Prints load names and powers
+
+	void listPrint(string name, double LoadCurrent[], double load, double defVoltage, int numbLoads);//precondtion: declared member variables 
+	//postcondition: Prints load names and powers
 
 
 	//member variables:
-	double LoadPower[MAXLOAD];
-	double LoadCurrent[MAXLOAD];
+	double LoadPower[MAXLOAD] = { 0,0,0,0,0,0,0,0,0,0 };
+	double LoadCurrent[MAXLOAD] = { 0,0,0,0,0,0,0,0,0,0 };
 
 };
 

@@ -28,7 +28,7 @@ int numbLoads, numbIV;
 double Current, RunTime, LoadDmnd, Latitude, Longitude;
 double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target, defVoltage = 12.0;
 double Location[3][2] = { {0,1}, {2,3}, {4,5} };
-string Device, Local, Units = "Kwh/day/m^2";
+string Device, Local, name, Units = "Kwh/day/m^2";
 string InsolationVals[MAXVALS];
 char ans, answ, result, aString[] = "AverageInsolation";
 
@@ -55,8 +55,6 @@ int main()
 {
 	//declare class objects
 	LoadInfo loads;
-	LoadInfo info;
-
 
 	outStream.open("outfile.dat", ios::app);//opens output file
 	if (outStream.fail())//exits program if output file opening fails
@@ -136,7 +134,7 @@ int main()
 		case 2:
 			cout << "\nYou will be running a system analysis\n";
 
-			LoadInfo(0.0, 0.0);//intializes member vairables LoadPower and LoadCurrent
+			//LoadInfo(0.0, 0.0);//intializes member vairables LoadPower and LoadCurrent
 
 			inStream.open("outfile.dat");//opens input file
 			if (inStream.fail())//exits program is input file opening fails
@@ -174,6 +172,7 @@ int main()
 				cin >> tempStr;
 				loads.setName(tempStr, i);//mutator function required to send names to the private member LoadNames in the class LoadInfo
 			}
+
 
 			int choice;
 
@@ -229,12 +228,13 @@ int main()
 							cout << target << " is stored in array position " << tempStrb << endl << "\n";	
 						}
 
-						cout << "Would you like to search again? Type y/n\n";
+						cout << "Would you like to search again? Type y/n\n\n";
 						cin >> ans;
 
 					}  
 		
-
+					loads.listPrint(name, loads.LoadPower, numbLoads);//calls function to print load names and powers
+					
 					cout << "\nThe total load is " << totalLoad << " watts";
 
 					LoadDmnd = PowerDmnd(totalLoad);//calls function to convert power demand
@@ -259,7 +259,7 @@ int main()
 					cin >> ans;
 
 					//searches array for a user specified value
-					while ((answ != 'n') && (answ != 'N'))
+					while ((ans != 'n') && (ans != 'N'))
 					{
 						cout << "Enter the current value you want to search for\n";
 						cin >> target;
@@ -274,11 +274,12 @@ int main()
 							name = loads.getName(result);//accesses private member variable LoadNames
 							cout << target << " is stored in array position " << name << endl << "\n";
 						}
-						cout << "Would you like to search again? Type y/n\n";
-						cin >> answ;
+						cout << "Would you like to search again? Type y/n\n\n";
+						cin >> ans;
 
 					} 
 
+					loads.listPrint(name, loads.LoadCurrent, load, defVoltage, numbLoads);//calls function to print load names and powers
 			
 					totalLoad = totalLoad * defVoltage;//calculates load by multiplying total current by default volatage
 					cout << "\nThe total load is " << totalLoad << " watts";
@@ -387,42 +388,3 @@ double calcWatts(double insolation)//function definition for calculating watts
 	watts = (Energy / insolation) * conv; //calculates needed power in KW and uses a conversion factor to get power in Watts
 	return watts;
 }
-
-
-
-//functions in progress
-
-/*void listPrint(LoadInfo info, int numbLoads)//function definition for friend function that prints load names and powers
-{
-	newLine();
-	for (int i = 0; i < numbLoads; i++)
-	{
-		cout << info.LoadNames[i] << " requires " << info.LoadPower[i] << " Watts\n";
-	}
-	return;
-}
-
-void listPrint(LoadInfo info, double load, double defVoltage, int numbLoads)//function definition for friend function that prints load names and powers
-{
-	newLine();
-	for (int i = 0; i < numbLoads; i++)
-	{
-		load = info.LoadCurrent[i] * defVoltage;
-		cout << info.LoadNames[i] << " requires " << load << " Watts\n";
-	}
-	return;
-}*/
-
-/*void listPrint(LoadInfo info, int NumberOfLoads);//precondition: friend function that can access class members
-//postcondition: Function prints the name and power for each load
-
-void listPrint(LoadInfo info, double load, double defVoltage, int NumberOfLoads);//precondition: friend function that can access class members
-//Function calculates the power by multiplying the current and voltage then prints the name and power for each load*/
-
-//listPrint(info, numbLoads);//friend function prints info contained in class LoadInfo
-
-//listPrint(info, load, defVoltage, numbLoads);
-
-//friend void listPrint(LoadInfo info, int NumberOfLoads);
-
-//friend void listPrint(LoadInfo info, double load, double defVoltage, int NumberOfLoads);
