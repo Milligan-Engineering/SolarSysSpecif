@@ -12,6 +12,7 @@
 #include <string>
 #include <cmath>
 #include <fstream>
+#include <cstdlib>
 #include "stdafx.h"
 #include "LoadInfo.h"
 
@@ -47,6 +48,8 @@ string Device, Local, name, Units = "Kwh/day/m^2";
 string InsolationVals[MAXVALS];
 char ans, answ, result, aString[] = "AverageInsolation";
 
+string location[MAXLOADS];
+double latitude[MAXLOADS], longitude[MAXLOADS];
 
 //declare file streams
 ifstream inStream;
@@ -59,7 +62,7 @@ int main()
 	//declare class object
 	LoadInfo loads;
 
-	outStream.open("outfile.dat", ios::app);//opens output file
+	outStream.open("insolationoutfile.dat", ios::app);//opens output file
 	if (outStream.fail())//exits program if output file opening fails
 	{
 		cout << "Output file opening failed.\n";
@@ -90,7 +93,7 @@ int main()
 		switch (choice)//switches between entering Insolation values and running a system analyses
 		{
 		case 1:
-			cout << "You will be entering Insolation values\n";
+			cout << "You will be entering information for Insolation values\n";
 			cout << "Enter number of Insolation values you want to add to file. Maximum of 10 at a time."
 				<< "\nThis number must be an integer value. Entering any other character will crash the program.\n";
 			cin >> numbIV;
@@ -108,14 +111,21 @@ int main()
 			//retrieves user input of insolation values
 			for (int m = 0; m < numbIV; m++)
 			{
+				cout << "\nEnter Location name " << m + 1 << " with no spaces : ";
+				cin >> location[m];
 				cout << "\nEnter Insolation value " << m + 1 << " : ";
 				cin >> InsolationVals[m];
+				cout << "\nEnter Latitude for Location " << m + 1 << " : ";
+				cin >> latitude[m];
+				cout << "\nEnter Longitude for Location " << m + 1 << " : ";
+				cin >> longitude[m];
 			}
 
 			//sends user input to output file
 			for (int k = 0; k < numbIV; k++)
 			{
-				outStream << aString << " " << InsolationVals[k] << endl; //Outputs array to txtFile
+				outStream << location[k] << ", " << InsolationVals[k] << ", " << latitude[k] << ", " 
+					<< longitude[k] << endl; //Outputs array to txtFile
 			}
 
 			listPrint(InsolationVals, numbIV);//prints Insolation values
@@ -139,7 +149,7 @@ int main()
 			cout << "\nYou will be running a system analysis\n";
 
 
-			inStream.open("outfile.dat");//opens input file
+			inStream.open("insolationinfile.csv");//opens input file
 			if (inStream.fail())//exits program is input file opening fails
 			{
 				cout << "Input file opening failed.\n";
@@ -147,7 +157,7 @@ int main()
 			}
 
 			//reads Insolation value from file 
-			inStream >> aString;
+			//inStream >> aString;
 			inStream >> InsolationVals[0];
 			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//prints Insolation value retrieved from file 
 			
