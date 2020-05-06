@@ -4,8 +4,8 @@
 //Email Address: efforgety@my.milligan.edu
 //Term Project: Solar System Specifier
 //Description: This program uses calculations to determine the number of solar panels needed to run a system based on user inputs.
-//Fixed listPrint
-//Last Changed: 04/28/2020
+//Added advanced features
+//Last Changed: 05/06/2020
 
 
 #include <iostream>
