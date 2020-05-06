@@ -32,5 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="insolationout.csv" />
+    <None Include="insolationout.dat" />
   </ItemGroup>
 </Project>

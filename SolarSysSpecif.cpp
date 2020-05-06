@@ -12,8 +12,6 @@
 #include <string>
 #include <cmath>
 #include <fstream>
-#include <string>
-#include <vector>
 #include "stdafx.h"
 #include "LoadInfo.h"
 
@@ -37,7 +35,7 @@ double calcEnergy(double RunTime, double LoadDmnd);//precondition: uses predefin
 double calcWatts(double insolation);//precondition: uses predfined value for insolation and calls function calcEnergy 
 //postcondition: Function calculates the Wattage required to power the system and returns a variable of typ double for watts needed
 
-
+void getLocation(double Location[][2], int numbIV);
 
 
 //declare variables
@@ -46,10 +44,15 @@ const double defVoltage = 12.0;
 int numbLoads, numbIV;
 double Current, RunTime, LoadDmnd, Latitude, Longitude;
 double totalLoad, energyReq, wattsNeeded, panelWatts, load, hours, insolation, target;
-double Location[3][2] = { {0,1}, {2,3}, {4,5} };
 string Device, Local, name, Units = "Kwh/day/m^2";
-string InsolationVals[MAXVALS];
 char ans, answ, result, aString[] = "AverageInsolation";
+
+
+struct Insolation
+{
+	string location[MAXVALS];
+	string InsolationVals[MAXVALS];
+};
 
 
 //declare file streams
@@ -62,8 +65,10 @@ int main()
 {
 	//declare class object
 	LoadInfo loads;
+	//Creates object for structure
+	Insolation info;
 
-	outStream.open("insolationout.csv", ios::app);//opens output file
+	outStream.open("insolationout.dat", ios::app);//opens output file
 	if (outStream.fail())//exits program if output file opening fails
 	{
 		cout << "Output file opening failed.\n";
@@ -72,9 +77,10 @@ int main()
 
 
 	cout << "Welcome to the Solar System Specifier Program \n\n";
+
 	int choice;
 
-	//implements a swticth menu
+	//implements a switch menu
 	do
 	{
 		cout << "\nWould you like to enter Insolation values or run a system analysis?\nEnter 1 for Insolation\nEnter 2 for Analysis"
@@ -106,25 +112,31 @@ int main()
 				cin >> numbIV;
 			}
 
+			
 			cout << "You will be entering " << numbIV << " Insolation values."
 				<< "\nPlease enter numerical values only.\n";// Echoes number of values
 			
 			//retrieves user input of insolation values
 			for (int m = 0; m < numbIV; m++)
 			{
-				cout << "\nEnter Insolation value " << m + 1 << " : ";
-				cin >> InsolationVals[m];
+				cout << "\nEnter name of Insolation location " << m + 1 << " : ";
+				cin >> info.location[m];
+				cout << "\nEnter value of Insolation location " << m + 1 << " : ";
+				cin >> info.InsolationVals[m];
 			}
-
+			
+			void getLocation(double Location[][2], int numbIV);
+		
 			//sends user input to output file
 			for (int k = 0; k < numbIV; k++)
 			{
-				outStream << aString << " " << InsolationVals[k] << endl; //Outputs array to txtFile
+				outStream << info.InsolationVals[k] << endl; //Outputs array to txtFile
 			}
 
-			listPrint(InsolationVals, numbIV);//prints Insolation values
+			listPrint(info.InsolationVals, numbIV);//prints Insolation values
 
-			cout << "\nHere is a multidimensional array of system locations\n";
+
+			/*cout << "\nHere is a multidimensional array of system locations\n";
 
 			//Prints multidimensional array of locations
 			for (int i = 0; i < 3; i++) 
@@ -134,7 +146,7 @@ int main()
 					cout << "Location " << i << " at Latitude x[" << i 	<< "] and Longitude [" << j << "]: ";
 					cout << Location[i][j] << endl;
 				}
-			}
+			}*/
 			
 			//end of entering Insolation values
 			break;
@@ -142,70 +154,18 @@ int main()
 		case 2:
 			cout << "\nYou will be running a system analysis\n";
 
-
-			inStream.open("insolationout.csv");//opens input file
+			inStream.open("insolationout.dat");//opens input file
 			if (inStream.fail())//exits program is input file opening fails
 			{
 				cout << "Input file opening failed.\n";
 				exit(1);
 			}
-
-			int count = 0; 
-			string location;
-			string getLocal;
-			cout << "Enter the insolation location you want to search for "
-				<< "of the student to display details: "; 
-			cin >> location; 
-  
-			 // Read the Data from the file 
-			 // as String Vector 
-			 vector<string> row; 
-			 string line, word, temp, info; 
-  
-			 while (inStream >> temp)
-			 {
-
-				 row.clear();
-
-				 // read an entire row and 
-				 // store it in a string variable 'line' 
-				 getline(inStream, line);
-
-				 // used for breaking words 
-				 stringstream info(line);
-
-				 // read every column data of a row and 
-				 // store it in a string variable, 'word' 
-				 while (getline(info, word))
-				 {
-
-					 // add all the column data 
-					 // of a row to a vector 
-					 row.push_back(word);
-				 }
-
-				 // convert string to integer for comparision 
-				 getLocal = row[0];
-
-				 if (getLocal == location)
-				 {
-					 int count = 1;
-					 cout << "Insolation location: " << row[0] << "\n";
-					 cout << "Insolation value: " << row[1] << "\n";
-					 insolation = stod(row[1]);
-					 break;
-				 }
-				 if (count == 0)
-					 cout << "Record not found\n";
-			 }
-		
-
-			//reads Insolation value from file 
-			//inStream >> aString;
-			inStream >> InsolationVals[0];
-			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//prints Insolation value retrieved from file 
 			
-			//insolation = stod(InsolationVals[0]);//converts file input from string to double
+			//reads Insolation value from file 
+			inStream >> info.InsolationVals[0];
+			cout << aString << " : " << info.InsolationVals[0] << " " << Units << "\n";//prints Insolation value retrieved from file 
+			insolation = stod(info.InsolationVals[0]);//converts file input from string to double
+
 
 			// Retrieves number of loads
 			cout << "How many loads will you be powering?\nThis number must be an integer."
@@ -336,12 +296,11 @@ int main()
 
 					} 
 
-					loads.listPrint(name, loads.LoadCurrent, load, defVoltage, numbLoads);//calls function to print load names and powers
+					loads.listPrint(name, loads.LoadCurrent, load, defVoltage, numbLoads);//prints load names and powers
 			
 					totalLoad = totalLoad * defVoltage;//calculates load by multiplying total current by default volatage
-					cout << "\nThe total load is " << totalLoad << " watts";
 
-					LoadDmnd = PowerDmnd(totalLoad);//calls function to convert to Kw and stores value in LoadDmnd
+					LoadDmnd = PowerDmnd(totalLoad);//calls function to convert total load to Kw and stores value in LoadDmnd
 
 					cout << "\nThe total power demand of your loads is " << LoadDmnd << " Kw\n";
 			
@@ -426,11 +385,13 @@ void getHours(double& hours)//function definition for retrieving and validating 
 
 double calcEnergy(double RunTime, double LoadDmnd)//function definition for calculating energy
 {
-	double Energy = 0.0;
+	//double Energy = 0.0;
 	const double conv = 1000.0;
 
-	Energy = RunTime * LoadDmnd; //Calculates the neccessary energy that needs to be generated by the solar panels.
-	return Energy;
+	LoadDmnd = RunTime * LoadDmnd; //Calculates the neccessary energy that needs to be generated by the solar panels.
+	double *Energy;
+	Energy = &LoadDmnd;
+	return *Energy;
 }
 
 double calcWatts(double insolation)//function definition for calculating watts 
@@ -442,4 +403,18 @@ double calcWatts(double insolation)//function definition for calculating watts
 	Energy = calcEnergy(RunTime, LoadDmnd);//calls function that calculates the energy required and sets that value equal to a new variable
 	watts = (Energy / insolation) * conv; //calculates needed power in KW and uses a conversion factor to get power in Watts
 	return watts;
+}
+
+void getLocation(double Location[][2], int numbIV)
+{
+	double userInput;
+	for (int y = 0; y < 2; y++)
+	{
+		for (int x = 0; x < numbIV; x++)
+		{
+			cout << "Enter Latitude and Longitude for location " << x + 1 << " separated by spaces\n";
+			cin >> userInput;
+			Location[x][y] = userInput;
+		}
+	}
 }

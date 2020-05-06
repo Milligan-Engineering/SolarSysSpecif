@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="insolationout.csv" />
+    <None Include="insolationout.dat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
