@@ -12,6 +12,8 @@
 #include <string>
 #include <cmath>
 #include <fstream>
+#include <string>
+#include <vector>
 #include "stdafx.h"
 #include "LoadInfo.h"
 
@@ -34,6 +36,8 @@ double calcEnergy(double RunTime, double LoadDmnd);//precondition: uses predefin
 
 double calcWatts(double insolation);//precondition: uses predfined value for insolation and calls function calcEnergy 
 //postcondition: Function calculates the Wattage required to power the system and returns a variable of typ double for watts needed
+
+
 
 
 //declare variables
@@ -59,7 +63,7 @@ int main()
 	//declare class object
 	LoadInfo loads;
 
-	outStream.open("outfile.dat", ios::app);//opens output file
+	outStream.open("insolationout.csv", ios::app);//opens output file
 	if (outStream.fail())//exits program if output file opening fails
 	{
 		cout << "Output file opening failed.\n";
@@ -139,19 +143,69 @@ int main()
 			cout << "\nYou will be running a system analysis\n";
 
 
-			inStream.open("outfile.dat");//opens input file
+			inStream.open("insolationout.csv");//opens input file
 			if (inStream.fail())//exits program is input file opening fails
 			{
 				cout << "Input file opening failed.\n";
 				exit(1);
 			}
 
+			int count = 0; 
+			string location;
+			string getLocal;
+			cout << "Enter the insolation location you want to search for "
+				<< "of the student to display details: "; 
+			cin >> location; 
+  
+			 // Read the Data from the file 
+			 // as String Vector 
+			 vector<string> row; 
+			 string line, word, temp, info; 
+  
+			 while (inStream >> temp)
+			 {
+
+				 row.clear();
+
+				 // read an entire row and 
+				 // store it in a string variable 'line' 
+				 getline(inStream, line);
+
+				 // used for breaking words 
+				 stringstream info(line);
+
+				 // read every column data of a row and 
+				 // store it in a string variable, 'word' 
+				 while (getline(info, word))
+				 {
+
+					 // add all the column data 
+					 // of a row to a vector 
+					 row.push_back(word);
+				 }
+
+				 // convert string to integer for comparision 
+				 getLocal = row[0];
+
+				 if (getLocal == location)
+				 {
+					 int count = 1;
+					 cout << "Insolation location: " << row[0] << "\n";
+					 cout << "Insolation value: " << row[1] << "\n";
+					 insolation = stod(row[1]);
+					 break;
+				 }
+				 if (count == 0)
+					 cout << "Record not found\n";
+			 }
+		
+
 			//reads Insolation value from file 
-			inStream >> aString;
+			//inStream >> aString;
 			inStream >> InsolationVals[0];
 			cout << aString << " : " << InsolationVals[0] << " " << Units << "\n";//prints Insolation value retrieved from file 
 			
-			insolation = stod(InsolationVals[0]);//converts file input from string to double
+			//insolation = stod(InsolationVals[0]);//converts file input from string to double
 
 			// Retrieves number of loads
 			cout << "How many loads will you be powering?\nThis number must be an integer."
